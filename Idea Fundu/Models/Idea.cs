@@ -28,10 +28,10 @@ namespace Idea_Fundu.Models
 
         public DateTime CreatedDate { get; set; } = DateTime.Now;
 
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public ApplicationUser User { get; set; }
+        public ApplicationUser? User { get; set; }
 
         public ICollection<Document>? Documents { get; set; }
 

@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Idea>
+
+@{
+    ViewBag.Title = "Idea List";
+}
+
+<h2>Idea List</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Required Fund</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var idea in Model)
+        {
+            <tr>
+                <td>@idea.Title</td>
+                <td>@idea.Category</td>
+                <td>@idea.RequiredFund</td>
+            </tr>
+        }
+    </tbody>
+</table>

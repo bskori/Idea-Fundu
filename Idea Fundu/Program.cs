@@ -1,5 +1,7 @@
 using Idea_Fundu.Data;
+using Idea_Fundu.Interfaces;
 using Idea_Fundu.Models;
+using Idea_Fundu.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +16,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddScoped<IIdeaRepository, IdeaRepository>();
+
 
 builder.Services.AddControllersWithViews();
 

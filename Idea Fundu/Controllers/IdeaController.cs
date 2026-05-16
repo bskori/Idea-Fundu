@@ -5,6 +5,7 @@ using Idea_Fundu.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Idea_Fundu.Controllers
 {
@@ -35,12 +36,14 @@ namespace Idea_Fundu.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(IdeaCreateVM ideaCreateVM)
         {
             if (ModelState.IsValid)
@@ -73,6 +76,7 @@ namespace Idea_Fundu.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
             var idea = await _ideaRepository.GetIdeaByIdAsync(id);
@@ -80,6 +84,13 @@ namespace Idea_Fundu.Controllers
             if(idea == null)
             {
                 return NotFound();
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if(userId != idea.UserId)
+            {
+                return Unauthorized();
             }
 
             var vm = new IdeaCreateVM
@@ -98,6 +109,7 @@ namespace Idea_Fundu.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Edit(IdeaCreateVM vm)
         {
             if (ModelState.IsValid)
@@ -109,6 +121,13 @@ namespace Idea_Fundu.Controllers
                     return NotFound();
                 }
 
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if(userId != idea.UserId)
+                {
+                    return Unauthorized();
+                }
+
                 idea.Title = vm.Title;
                 idea.Description = vm.Description;
                 idea.Category = vm.Category;
@@ -118,21 +137,36 @@ namespace Idea_Fundu.Controllers
 
                 await _ideaRepository.UpdateIdeaAsync(idea);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("MyIdeas");
             }
 
             return View(vm);
             
         }
 
-
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
-            await _ideaRepository.DeleteIdeaAsync(id);
-            return RedirectToAction("Index");
-        }
-       
+            var idea = await _ideaRepository.GetIdeaByIdAsync(id);
 
+            if(idea == null)
+            {
+                return NotFound();
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if(idea.UserId != userId)
+            {
+                return Unauthorized();
+            }
+
+            await _ideaRepository.DeleteIdeaAsync(id);
+
+            return RedirectToAction("MyIdeas");
+        }
+
+        [Authorize]
         public async Task<IActionResult> MyIdeas()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

@@ -44,6 +44,14 @@
                         <a asp-action="Details" asp-route-id="@idea.Id" class="btn btn-outline-primary w-100">View Details</a>
                     </div>
 
+                    <div class="d-flex gap-2 mt-2">
+                        
+                        <a asp-action="Edit" asp-route-id="@idea.Id" class="btn btn-warning w-50">Edit</a>
+
+                        <a asp-action="Delete" asp-route-id="@idea.Id" class="btn btn-danger w-50">Delete</a>
+
+                    </div>
+
                 </div>
 
             </div>

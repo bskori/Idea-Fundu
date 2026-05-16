@@ -45,5 +45,10 @@ namespace Idea_Fundu.Repositories
             _context.Ideas.Update(idea);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<Idea> GetIdeaByIdAsync(int id)
+        {
+            return await _context.Ideas.FindAsync(id);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Idea_Fundu.Interfaces;
+﻿using AspNetCoreGeneratedDocument;
+using Idea_Fundu.Interfaces;
 using Idea_Fundu.Models;
 using Idea_Fundu.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -58,5 +59,66 @@ namespace Idea_Fundu.Controllers
 
             return View(idea);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var idea = await _ideaRepository.GetIdeaByIdAsync(id);
+
+            if(idea == null)
+            {
+                return NotFound();
+            }
+
+            var vm = new IdeaCreateVM
+            {
+                Id = idea.Id,
+                Title = idea.Title,
+                Description = idea.Description,
+                Category = idea.Category,
+                RequiredFund = idea.RequiredFund,
+                Restrictions = idea.Restrictions,
+                RiskLevel = idea.RiskLevel
+            };
+
+            return View(vm);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(IdeaCreateVM vm)
+        {
+            if (ModelState.IsValid)
+            {
+                var idea = await _ideaRepository.GetIdeaByIdAsync(vm.Id);
+
+                if(idea == null)
+                {
+                    return NotFound();
+                }
+
+                idea.Title = vm.Title;
+                idea.Description = vm.Description;
+                idea.Category = vm.Category;
+                idea.RequiredFund = vm.RequiredFund;
+                idea.Restrictions = vm.Restrictions;
+                idea.RiskLevel = vm.RiskLevel;
+
+                await _ideaRepository.UpdateIdeaAsync(idea);
+
+                return RedirectToAction("Index");
+            }
+
+            return View(vm);
+            
+        }
+
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _ideaRepository.DeleteIdeaAsync(id);
+            return RedirectToAction("Index");
+        }
+       
     }
 }

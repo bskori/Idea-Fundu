@@ -8,11 +8,14 @@ namespace Idea_Fundu.Interfaces
 
         Task<Idea> GetIdeaDetailsByIdAsync(int id);
 
+
         Task AddIdeaAsync(Idea idea);
 
         Task UpdateIdeaAsync(Idea idea);
 
         Task DeleteIdeaAsync(int id);
+
+        Task<Idea> GetIdeaByIdAsync(int id);
 
     }
 }

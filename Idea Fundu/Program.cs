@@ -18,7 +18,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddScoped<IIdeaRepository, IdeaRepository>();
-
+builder.Services.AddScoped<IInvestmentRepository, InvestmentRepository>();
 
 builder.Services.AddControllersWithViews();
 

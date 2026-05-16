@@ -11,7 +11,7 @@ namespace Idea_Fundu.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal Amount { get; set; }
 
-        public DateTime InvestmentDate { get; set; }= DateTime.Now;
+        public DateTime InvestmentDate { get; set; }
 
         public string? Suggestions { get; set; }
 

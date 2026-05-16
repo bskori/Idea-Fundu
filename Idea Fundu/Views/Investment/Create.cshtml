@@ -1,0 +1,59 @@
+﻿@model InvestmentCreateVM
+
+@{
+    ViewBag.Title = "Investment Create";
+}
+
+<div class="container mt-5">
+
+    <div class=" row justify-content-center">
+
+        <div class="col-md-6">
+
+            <div class="card shadow border-0 rounded-4">
+
+                <div class="card-body py-5">
+
+                    <h2 class="fw-bold mb-4 text-center"> Invest in Startup </h2>
+
+                    <form method="post">
+
+                        <input asp-for="IdeaId" type="hidden" />
+
+                        <div class="mb-3">
+
+                            <label asp-for="Amount" class="form-label"></label>
+                            <input asp-for="Amount" class="form-control" />
+                            <span asp-validation-for="Amount" class="text-danger"></span>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label asp-for="Suggestions" class="form-label"></label>
+                            <textarea asp-for="Suggestions" class="form-control" ></textarea>
+                            <span asp-validation-for="Suggestions" class="text-danger"></span>
+
+                        </div>
+
+                        <button class="btn btn-success w-100">
+                            Invest Now
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+   
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

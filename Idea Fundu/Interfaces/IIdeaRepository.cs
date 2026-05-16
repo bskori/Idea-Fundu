@@ -5,8 +5,8 @@ namespace Idea_Fundu.Interfaces
     public interface IIdeaRepository
     {
         Task<IEnumerable<Idea>> GetAllIdeasAsync();
-        
-        Task<Idea> GetIdeaByIdAsync(int id);
+
+        Task<Idea> GetIdeaDetailsByIdAsync(int id);
 
         Task AddIdeaAsync(Idea idea);
 

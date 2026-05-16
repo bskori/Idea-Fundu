@@ -1,0 +1,136 @@
+﻿@model Idea
+
+@{
+    ViewBag.Title = "Idea Details";
+}
+
+<div class="container mt-5">
+
+    <div class="row">
+
+        @* LEFT SECTION *@
+
+        <div class="col-md-8">
+
+            <div class="card border-0 shadow rounded-4 mb-4">
+
+                <div class="card-body p-5">
+
+                    <span class="badge bg-primary mb-3">
+                        @Model.Category
+                    </span>
+
+                    <h1 class="fw-bold mb-4">
+                        @Model.Title
+                    </h1>
+
+                    <p class="text-muted fs-5">
+                        @Model.Description
+                    </p>
+
+                </div>
+
+            </div>
+
+            @* RISK SECTION *@
+
+            <div class="card border-0 shadow rounded-4 mb-4">
+
+                <div class="card-body p-4">
+
+                    <h3 class="fw-bold mb-3">
+                        Risk Analysis
+                    </h3>
+
+                    <p>
+                        @(Model.RiskLevel ?? "No risk analysis available.")
+                    </p>
+
+                </div>
+
+            </div>
+
+            @* RESTRICTIONS *@
+
+            <div class="card border-0 shadow rounded-4">
+
+                <div class="card-body p-4">
+
+                    <h3 class="fw-bold mb-3">
+                        Investment Restrictions
+                    </h3>
+
+                    <p>
+                        @(Model.Restrictions ?? "No restrictions added.")
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        @* RIGHT SECTION *@
+
+        <div class="col-md-4">
+
+            <div class="card border-0 shadow rounded-4 sticky-top">
+
+                <div class="card-body p-4">
+
+                    <h3 class="fw-bold text-success">
+                        ₹ @Model.RequiredFund.ToString("N0")
+                    </h3>
+
+                    <p class="text-muted">
+                        Funding Goal
+                    </p>
+
+                    <p class="text-muted">
+                        Posted on @Model.CreatedDate.ToShortDateString()
+                    </p>
+
+                    <hr />
+
+                    <div class="mb-3">
+
+                        <label class="fw-bold">
+                            Funding Progress
+                        </label>
+
+                        <div class="progress mt-2" style="height: 25px;">
+
+                            <div class="progress-bar"
+                                 style="width: 35%;">
+
+                                35%
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <button class="btn btn-success w-100 btn-lg">
+
+                        Invest Now
+
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-dark w-100 mt-2">
+
+                        Back to Ideas
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>

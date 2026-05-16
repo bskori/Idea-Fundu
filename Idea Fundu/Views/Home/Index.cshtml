@@ -2,7 +2,143 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container py-5">
+
+    @* HERO SECTION *@
+
+    <div class="row align-items-center mb-5">
+
+        <div class="col-md-6">
+
+            <h1 class="display-4 fw-bold">Fund Innovative Startup Ideas</h1>
+
+            <p class="lead text-muted mt-4">
+
+                Idea Fundu connects entrepreneurs with investors
+                to transform innovative ideas into successful businesses.
+
+            </p>
+
+            <div class="mt-4">
+
+                <a asp-controller="Idea" asp-action="Index" class="btn btn-primary btn-lg me-3">
+                    Explore Ideas
+                </a>
+
+                <a asp-controller="Idea" asp-action="Create" class="btn btn-outline-dark btn-lg">
+                    Submit Idea
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6 text-center">
+            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978"
+                 class="img-fluid rounded-4 shadow"
+                 style="height:400px; object-fit:cover;">
+        </div>
+
+    </div>
+
+    @* STATS SECTION *@
+
+    <div class="row text-center mt-5 mb-5">
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 rounded-4 p-4">
+                <h2 class="fw-bold text-primary">120+</h2>
+                <p>Startup Ideas</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 rounded-4 p-4">
+                <h2 class="fw-bold text-success">₹50L+</h2>
+                <p>Total Funding</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 rounded-4 p-4">
+                <h2 class="fw-bold text-dark">300+</h2>
+                <p>Investors</p>
+            </div>
+        </div>
+
+    </div>
+
+
+    @* FEATURE SECTION *@
+
+    <div class="text-center mb-5">
+
+        <h2 class="fw-bold">Why Choose Idea Fundu?</h2>
+
+        <p class="text-muted">
+            A trusted platform for startup collaboration and investments.
+        </p>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+
+                <h4 class="fw-bold">Startup Showcase</h4>
+
+                <p class="text-muted">
+
+                    Present your business ideas professionally
+                    to attract investors.
+                </p>
+
+            </div>
+
+
+        </div>
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+
+                <h4 class="fw-bold">
+                    Investor Network
+                </h4>
+
+                <p class="text-muted">
+
+                    Connect directly with investors interested
+                    in innovative opportunities.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+                <h4 class="fw-bold">
+                    Growth Tracking
+                </h4>
+
+                <p class="text-muted">
+
+                    Track project progress, funding,
+                    and startup growth.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
 </div>

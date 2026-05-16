@@ -2,6 +2,7 @@
 using Idea_Fundu.Models;
 using Idea_Fundu.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Idea_Fundu.Controllers
 {
@@ -44,6 +45,18 @@ namespace Idea_Fundu.Controllers
                 return RedirectToAction("Index");
             }
             return View(ideaCreateVM);
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var idea = await _ideaRepository.GetIdeaDetailsByIdAsync(id);
+
+            if(idea == null)
+            {
+                return NotFound();
+            }
+
+            return View(idea);
         }
     }
 }

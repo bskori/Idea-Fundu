@@ -35,9 +35,9 @@ namespace Idea_Fundu.Repositories
             return await _context.Ideas.ToListAsync();
         }
 
-        public async Task<Idea> GetIdeaByIdAsync(int id)
+        public async Task<Idea> GetIdeaDetailsByIdAsync(int id)
         {
-           return await _context.Ideas.FindAsync(id);
+            return await _context.Ideas.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task UpdateIdeaAsync(Idea idea)

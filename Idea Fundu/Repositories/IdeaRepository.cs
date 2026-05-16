@@ -50,5 +50,22 @@ namespace Idea_Fundu.Repositories
         {
             return await _context.Ideas.FindAsync(id);
         }
+
+        public async Task<IEnumerable<Idea>> SearchIdeasAsync(string SearchTerm, string category)
+        {
+            var query =  _context.Ideas.AsQueryable();
+
+            if (!string.IsNullOrEmpty(SearchTerm))
+            {
+                query = query.Where(x => x.Title.Contains(SearchTerm) || x.Description.Contains(SearchTerm));
+            }
+
+            if(!string.IsNullOrEmpty(category))
+            {
+                query = query.Where(x => x.Category == category);
+            }
+
+            return await query.ToListAsync();
+        }
     }
 }

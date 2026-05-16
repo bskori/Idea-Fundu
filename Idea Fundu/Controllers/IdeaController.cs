@@ -16,9 +16,20 @@ namespace Idea_Fundu.Controllers
             _ideaRepository = ideaRepository;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTerm, string category)
         {
-            var ideas = await _ideaRepository.GetAllIdeasAsync();
+            var ideas = await _ideaRepository.SearchIdeasAsync(searchTerm, category);
+
+
+            ViewBag.Categories = new List<string>
+            {
+                "AI & Recruitment",
+                "AgriTech",
+                "HealthTech",
+                "Green Energy",
+                "EdTech"
+            };
+
             return View(ideas);
         }
 

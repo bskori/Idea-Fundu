@@ -67,5 +67,10 @@ namespace Idea_Fundu.Repositories
 
             return await query.ToListAsync();
         }
+
+        public async Task<IEnumerable<Idea>> GetIdeasByUserAsync(string userId)
+        {
+            return await _context.Ideas.Where(x => x.UserId == userId).ToListAsync();
+        }
     }
 }

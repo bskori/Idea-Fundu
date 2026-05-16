@@ -4,6 +4,7 @@ namespace Idea_Fundu.Interfaces
 {
     public interface IIdeaRepository
     {
+        Task<IEnumerable<Idea>> GetIdeasByUserAsync(string userId);
         Task<IEnumerable<Idea>> SearchIdeasAsync(string searchTerm, string category);
         Task<IEnumerable<Idea>> GetAllIdeasAsync();
 

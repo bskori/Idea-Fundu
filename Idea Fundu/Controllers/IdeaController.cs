@@ -4,6 +4,7 @@ using Idea_Fundu.Models;
 using Idea_Fundu.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Claims;
 
 namespace Idea_Fundu.Controllers
 {
@@ -131,5 +132,14 @@ namespace Idea_Fundu.Controllers
             return RedirectToAction("Index");
         }
        
+
+        public async Task<IActionResult> MyIdeas()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var ideas = await _ideaRepository.GetIdeasByUserAsync(userId);
+
+            return View(ideas);
+        }
     }
 }

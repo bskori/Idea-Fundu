@@ -19,9 +19,16 @@ namespace Idea_Fundu.Repositories
             await _context.Investments.AddAsync(investment);
         }
 
+        public async Task<IEnumerable<Investment>> GetInvestmentByUserAsync(string userId)
+        {
+            return await _context.Investments.Include(x => x.Idea).Where(x => x.InvestorId == userId).OrderByDescending(x => x.InvestmentDate).ToListAsync();
+        }
+
         public async Task<IEnumerable<Investment>> GetInvestmentsByIdeaAsync(int ideaId)
         {
             return await _context.Investments.Where(x => x.IdeaId == ideaId).ToListAsync();
         }
+
+       
     }
 }

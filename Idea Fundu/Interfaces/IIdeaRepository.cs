@@ -19,5 +19,8 @@ namespace Idea_Fundu.Interfaces
 
         Task<Idea> GetIdeaByIdAsync(int id);
 
+        Task<decimal> GetTotalInvestmentAsync(int ideaId);
+
+
     }
 }

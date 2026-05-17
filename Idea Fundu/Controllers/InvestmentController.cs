@@ -49,5 +49,14 @@ namespace Idea_Fundu.Controllers
             }
             return View(vm);
         }
+
+        public async Task<IActionResult> MyInvestments()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var investments = await _investmentRepository.GetInvestmentByUserAsync(userId);
+
+            return View(investments);
+        }
     }
 }

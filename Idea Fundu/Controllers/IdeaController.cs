@@ -72,6 +72,14 @@ namespace Idea_Fundu.Controllers
                 return NotFound();
             }
 
+            var totalInvestment = await _ideaRepository.GetTotalInvestmentAsync(id);
+
+            ViewBag.TotalInvestment = totalInvestment;
+
+            ViewBag.Progress = idea.RequiredFund == 0 ? 0 : (totalInvestment / idea.RequiredFund) * 100;
+
+            ViewBag.RemainingAmount = idea.RequiredFund - totalInvestment;
+
             return View(idea);
         }
 

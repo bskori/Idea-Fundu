@@ -7,5 +7,7 @@ namespace Idea_Fundu.Interfaces
         Task AddInvestmentAsync(Investment investment);
 
         Task<IEnumerable<Investment>> GetInvestmentsByIdeaAsync(int ideaId);
+
+        Task<IEnumerable<Investment>> GetInvestmentByUserAsync(string userId);
     }
 }

@@ -92,26 +92,46 @@
 
                     <hr />
 
+                    <div class="mb-4">
+
+                        <h5 class="text-success fw-bold">
+                            ₹ @ViewBag.TotalInvestment.ToString("N0")
+                        </h5>
+
+                        <p class="text-muted">
+                            Total Investment Raised
+                        </p>
+
+                    </div>
+
                     <div class="mb-3">
 
                         <label class="fw-bold">
+
                             Funding Progress
+
                         </label>
 
-                        <div class="progress mt-2" style="height: 25px;">
+                        <div class="progress mt-2" style="height:25px">
 
-                            <div class="progress-bar"
-                                 style="width: 35%;">
-
-                                35%
-
+                            <div class="progress-bar bg-success" style="width:@ViewBag.Progress%">
+                                @Math.Round(ViewBag.Progress, 0)%
                             </div>
 
                         </div>
 
                     </div>
 
-                   <a asp-action="Create" asp-controller="Investment" asp-route-id="@Model.Id" class="btn btn-success w-100 btn-lg">
+                    <div class="mt-3">
+
+                        <p>
+                            <strong>Remaing Amount:</strong>
+                            ₹ @ViewBag.RemainingAmount.ToString("N0")
+                        </p>
+
+                    </div>
+
+                    <a asp-action="Create" asp-controller="Investment" asp-route-ideaId="@Model.Id" class="btn btn-success w-100 btn-lg">
 
                        Invest Now
 

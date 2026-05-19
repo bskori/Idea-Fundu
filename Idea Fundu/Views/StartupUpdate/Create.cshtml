@@ -1,0 +1,53 @@
+﻿@model StartupUpdateCreateVM
+
+@{
+    ViewBag.Title = "Add Startup Update";
+}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8">
+
+            <div class="card shadow rounded-4 border-0">
+
+                <div class="card-body p-5">
+
+                    <h5 class="fw-bold mb-4">
+                        Add Startup Update
+                    </h5>
+
+                    <form method="post">
+
+                        <input asp-for="IdeaId" type="hidden" />
+
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label"></label>
+                            <input asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label"></label>
+                            <textarea asp-for="Description" rows="5" class="form-control"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <button class="btn btn-success w-100"> Add Update</button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts{
+    <partial name= "_ValidationScriptsPartial"/>
+}

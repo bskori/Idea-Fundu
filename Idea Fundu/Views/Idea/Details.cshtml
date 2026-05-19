@@ -52,7 +52,7 @@
 
             @* RESTRICTIONS *@
 
-            <div class="card border-0 shadow rounded-4">
+            <div class="card border-0 shadow rounded-4 mb-4">
 
                 <div class="card-body p-4">
 
@@ -64,6 +64,67 @@
                         @(Model.Restrictions ?? "No restrictions added.")
                     </p>
 
+                </div>
+
+            </div>
+
+            @* STARTUP UPDATES SECTION *@
+
+            <div class="card border-0 shadow rounded-4">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+
+                        <h3 class="fw-bold">
+
+                            Startup Updates
+
+                        </h3>
+
+                        <a asp-action="Create"
+                           asp-controller="StartupUpdate"
+                        asp-route-ideaId="@Model.Id"
+                        class="btn btn-outline-success">
+
+                            Add Update
+
+                        </a>
+
+                    </div>
+
+                    @if(ViewBag.Updates.Count > 0)
+                    {
+                        @foreach(var item in ViewBag.Updates)
+                        {
+                            <div class="border rounded-4 p-3 mb-3">
+
+                                <h5 class="fw-bold">
+                                    @item.Title
+                                </h5>
+
+                                <p>
+                                    @item.Description
+                                </p>
+
+                                <small class="text-muted">
+
+                                    Posted On:
+                                    @item.CreatedDate.ToShortDateString()
+
+                                </small>
+
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+
+                            No startup updates available.
+
+                        </div>
+                    }
                 </div>
 
             </div>

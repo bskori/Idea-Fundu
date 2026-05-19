@@ -12,10 +12,12 @@ namespace Idea_Fundu.Controllers
     public class IdeaController : Controller
     {
         private readonly IIdeaRepository _ideaRepository;
+        private readonly IStartupUpdateRepository _startupUpdateRepository;
 
-        public IdeaController(IIdeaRepository ideaRepository)
+        public IdeaController(IIdeaRepository ideaRepository, IStartupUpdateRepository startupUpdateRepository)
         {
             _ideaRepository = ideaRepository;
+            _startupUpdateRepository = startupUpdateRepository;
         }
 
         public async Task<IActionResult> Index(string searchTerm, string category)
@@ -79,6 +81,10 @@ namespace Idea_Fundu.Controllers
             ViewBag.Progress = idea.RequiredFund == 0 ? 0 : (totalInvestment / idea.RequiredFund) * 100;
 
             ViewBag.RemainingAmount = idea.RequiredFund - totalInvestment;
+
+            var updates = await _startupUpdateRepository.GetUpdatesByIdAsync(id);
+
+            ViewBag.Updates = updates;
 
             return View(idea);
         }

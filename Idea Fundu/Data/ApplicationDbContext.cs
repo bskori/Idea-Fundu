@@ -18,6 +18,7 @@ namespace Idea_Fundu.Data
         public DbSet<ProgressUpdate> ProgressUpdates { get; set; }
         public DbSet<Agreement> Agreements { get; set; }
         public DbSet<StartupUpdate> StartupUpdates { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

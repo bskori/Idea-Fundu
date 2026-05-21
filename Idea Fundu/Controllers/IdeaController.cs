@@ -13,10 +13,12 @@ namespace Idea_Fundu.Controllers
     {
         private readonly IIdeaRepository _ideaRepository;
         private readonly IStartupUpdateRepository _startupUpdateRepository;
+        private readonly ICommentRepository _commentRepository;
 
-        public IdeaController(IIdeaRepository ideaRepository, IStartupUpdateRepository startupUpdateRepository)
+        public IdeaController(IIdeaRepository ideaRepository, IStartupUpdateRepository startupUpdateRepository, ICommentRepository commentRepository)
         {
             _ideaRepository = ideaRepository;
+            _commentRepository = commentRepository;
             _startupUpdateRepository = startupUpdateRepository;
         }
 
@@ -85,6 +87,10 @@ namespace Idea_Fundu.Controllers
             var updates = await _startupUpdateRepository.GetUpdatesByIdAsync(id);
 
             ViewBag.Updates = updates;
+
+            var comments = await _commentRepository.GetCommentsByIdeaAsync(id);
+
+            ViewBag.Comments = comments;
 
             return View(idea);
         }

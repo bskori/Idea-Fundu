@@ -129,6 +129,83 @@
 
             </div>
 
+
+            @* COMMENT SECTION *@
+
+            <div class="card border-0 shadow rounded-4 mt-4">
+
+                <div class="card-body p-4">
+
+                    <h3 class="fw-bold">
+
+                        Investor Discussions
+
+                    </h3>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <form asp-action="Create" asp-controller="Comment" method="post">
+
+                            <input type="hidden" name="ideaId" value="@Model.Id" />
+
+                            <div class="mb-3">
+
+                                <textarea name="Message" class="form-control" rows="4" placeholder="Write your comment..."></textarea>
+
+                            </div>
+
+                            <button class="btn btn-primary">Post Comment</button>
+
+                        </form>
+
+                        <hr />
+                    }
+
+                    @if(ViewBag.Comments != null && ViewBag.Comments.Count > 0)
+                    {
+                        @foreach(var item in ViewBag.Comments)
+                        {
+                            <div class="border rounded-4 p-3 m-3">
+
+                                <div class="d-flex justify-content-between">
+
+                                    <h6 class="fw-bold">
+
+                                        @item.User.FullName
+
+                                    </h6>
+
+                                    <small class="text-muted">
+
+                                        @item.CreatedDate.ToShortDateString()
+
+                                    </small>
+
+                                </div>
+
+                                <p class="mt-2 mb-0">
+
+                                    @item.Message
+
+                                </p>
+
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+
+                            No discussions available yet.
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+
         </div>
 
         @* RIGHT SECTION *@

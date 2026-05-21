@@ -1,0 +1,234 @@
+﻿@model DashboardVM
+
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<div class="container mt-5">
+
+    <h2 class="fw-bold mb-4">
+
+        My Dashboard
+
+    </h2>
+
+    @* STATS SECTION *@
+
+    <div class="row mb-5">
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card border-0 shadow rounded-4 h-100">
+
+                <div class="card-body p-4">
+
+                    <h5 class="text-muted">
+
+                        Total Ideas
+
+                    </h5>
+
+                    <h2 class="fw-bold text-primary">
+
+                        @Model.TotalIdeas
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card border-0 shadow rounded-4 h-100">
+
+                <div class="card-body p-4">
+
+                    <h5 class="text-muted">
+
+                        Total Investments
+
+                    </h5>
+
+                    <h2 class="fw-bold text-success">
+
+                        @Model.TotalInvestments
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card border-0 shadow rounded-4 h-100">
+
+                <div class="card-body p-4">
+
+                    <h5 class="text-muted">
+
+                        Amount Invested
+
+                    </h5>
+
+                    <h2 class="fw-bold text-dark">
+
+                        ₹ @Model.TotalAmountInvested.ToString("N0")
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    @* RECENT IDEAS *@
+
+    <div class="card border-0 shadow rounded-4 mb-5">
+
+        <div class="card-body p-4">
+
+            <h3 class="fw-bold mb-4">
+
+                Recent Ideas
+
+            </h3>
+
+            @if (Model.RecentIdeas.Any())
+            {
+                <div class="row">
+
+                    @foreach (var item in Model.RecentIdeas)
+                    {
+                        <div class="col-md-6 mb-3">
+
+                            <div class="border rounded-4 p-3 h-100">
+
+                                <span class="badge bg-primary mb-2">
+
+                                    @item.Category
+
+                                </span>
+
+                                <h5 class="fw-bold">
+
+                                    @item.Title
+
+                                </h5>
+
+                                <p class="text-muted">
+
+                                    Posted On:
+                                    @item.CreatedDate.ToShortDateString()
+
+                                </p>
+
+                                <a asp-controller="Idea"
+                                   asp-action="Details"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-outline-primary btn-sm">
+
+                                    View Details
+
+                                </a>
+
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+
+                    No ideas created yet.
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+    @* RECENT INVESTMENTS *@
+
+    <div class="card border-0 shadow rounded-4">
+
+        <div class="card-body p-4">
+
+            <h3 class="fw-bold mb-4">
+
+                Recent Investments
+
+            </h3>
+
+            @if (Model.RecentInvestments.Any())
+            {
+                <div class="row">
+
+                    @foreach (var item in Model.RecentInvestments)
+                    {
+                        <div class="col-md-6 mb-3">
+
+                            <div class="border rounded-4 p-3 h-100">
+
+                                <h5 class="fw-bold text-success">
+
+                                    ₹ @item.Amount.ToString("N0")
+
+                                </h5>
+
+                                <p>
+
+                                    <strong>Idea:</strong>
+                                    @item.Idea.Title
+
+                                </p>
+
+                                <p class="text-muted">
+
+                                    Invested On:
+                                    @item.InvestmentDate.ToShortDateString()
+
+                                </p>
+
+                                <a asp-controller="Idea"
+                                   asp-action="Details"
+                                   asp-route-id="@item.IdeaId"
+                                   class="btn btn-outline-success btn-sm">
+
+                                    View Idea
+
+                                </a>
+
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+
+                    No investments made yet.
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>

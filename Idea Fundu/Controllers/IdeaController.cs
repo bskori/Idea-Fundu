@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Routing.Constraints;
 
 namespace Idea_Fundu.Controllers
 {
@@ -14,12 +15,14 @@ namespace Idea_Fundu.Controllers
         private readonly IIdeaRepository _ideaRepository;
         private readonly IStartupUpdateRepository _startupUpdateRepository;
         private readonly ICommentRepository _commentRepository;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public IdeaController(IIdeaRepository ideaRepository, IStartupUpdateRepository startupUpdateRepository, ICommentRepository commentRepository)
+        public IdeaController(IIdeaRepository ideaRepository, IStartupUpdateRepository startupUpdateRepository, ICommentRepository commentRepository, IWebHostEnvironment webHostEnvironment)
         {
             _ideaRepository = ideaRepository;
             _commentRepository = commentRepository;
             _startupUpdateRepository = startupUpdateRepository;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IActionResult> Index(string searchTerm, string category)
@@ -52,6 +55,21 @@ namespace Idea_Fundu.Controllers
         {
             if (ModelState.IsValid)
             {
+                string fileName = null;
+                if(ideaCreateVM.ImageFile != null)
+                {
+                    string uploadFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+
+                    fileName = Guid.NewGuid().ToString() + "_" + ideaCreateVM.ImageFile.FileName;
+
+                    string filePath = Path.Combine(uploadFolder, fileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await ideaCreateVM.ImageFile.CopyToAsync(fileStream);      
+                    }
+                }
+
                 Idea idea = new Idea
                 {
                     Title = ideaCreateVM.Title,
@@ -60,6 +78,7 @@ namespace Idea_Fundu.Controllers
                     Category = ideaCreateVM.Category,
                     RiskLevel = ideaCreateVM.RiskLevel,
                     Restrictions = ideaCreateVM.Restrictions,
+                    ImageUrl = fileName
                 };
                 await _ideaRepository.AddIdeaAsync(idea);
                 return RedirectToAction("Index");

@@ -18,6 +18,8 @@ namespace Idea_Fundu.Models
         [Column(TypeName="decimal(18,2)")]
         public decimal RequiredFund { get; set; }
 
+        public string? ImageUrl { get; set; }
+
         [StringLength(100)]
         public string Category { get; set; }
 

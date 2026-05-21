@@ -12,6 +12,23 @@
 
         <div class="col-md-8">
 
+            @* IMAGE CARD *@
+
+           
+
+            <div class="card border-0 shadow rounded-4 mb-4">
+
+                <img src="@(string.IsNullOrEmpty(Model.ImageUrl)
+                                              ? "/uploads/no-image.png"
+                                              : "/uploads/" + Model.ImageUrl)"
+                     class="img-fluid rounded-4"
+                     style="height:400px;
+                width:100%;
+                object-fit:cover;" />
+
+            </div>
+ 
+
             <div class="card border-0 shadow rounded-4 mb-4">
 
                 <div class="card-body p-5">

@@ -19,6 +19,8 @@ namespace Idea_Fundu.ViewModels
         [Required]
         public string Category { get; set; }
 
+        public IFormFile? ImageFile { get; set; }
+
         public string RiskLevel { get; set; }
         public string Restrictions { get; set; }
     }

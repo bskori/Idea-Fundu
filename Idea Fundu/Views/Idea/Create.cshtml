@@ -8,7 +8,7 @@
 <div class="card shadow p-4 rounded-4">
     <h2>Create Idea</h2>
 
-    <form asp-action="Create" method="post">
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
 
         <div class="mb-3">
             <label asp-for="Title" class="form-label"></label>
@@ -44,6 +44,11 @@
             <label asp-for="Restrictions" class="form-label"></label>
             <input asp-for="Restrictions" class="form-control" />
             <span asp-validation-for="Restrictions" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ImageFile" class="form-label"></label>
+            <input asp-for="ImageFile" class="form-control" />
         </div>
 
         <div>

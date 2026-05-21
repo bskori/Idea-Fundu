@@ -25,10 +25,13 @@ namespace Idea_Fundu.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<IActionResult> Index(string searchTerm, string category)
+        public async Task<IActionResult> Index(string searchTerm, string category, int page=1)
         {
             var ideas = await _ideaRepository.SearchIdeasAsync(searchTerm, category);
 
+            int pageSize = 6;
+
+            var pagedIdeas = ideas.Skip((page - 1)).Take(pageSize).ToList();
 
             ViewBag.Categories = new List<string>
             {
@@ -38,6 +41,11 @@ namespace Idea_Fundu.Controllers
                 "Green Energy",
                 "EdTech"
             };
+
+            ViewBag.SearchTerm = searchTerm;
+            ViewBag.Category = category;
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(ideas.Count() / (double)pageSize);
 
             return View(ideas);
         }

@@ -77,5 +77,7 @@ namespace Idea_Fundu.Repositories
         {
             return await _context.Investments.Where(x => x.IdeaId == ideaId).SumAsync(x => (decimal?)x.Amount) ?? 0;
         }
+
+       
     }
 }

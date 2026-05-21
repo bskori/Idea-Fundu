@@ -12,7 +12,7 @@
 
             <div class="col-md-6">
 
-                <input type="text" name="searchTerm" class="form-control" placeholder="Search startup ideas..." />
+                <input type="text" name="searchTerm" value="@ViewBag.SearchTerm" class="form-control" placeholder="Search startup ideas..." />
 
             </div>
 
@@ -24,7 +24,7 @@
 
                     @foreach(var category in ViewBag.Categories)
                         {
-                            <option value="@category">@category</option>
+                            <option value="@category" selected="@(ViewBag.Category == category)">@category</option>
                         }
 
                 </select>
@@ -54,52 +54,132 @@
 
     </div>
 
-    <div class="row">
+        @if (Model.Any())
+    {
+        <div class="row">
 
-        @foreach (var idea in Model)
-        {
-            <div class="col-md-4 mb-4">
+            @foreach (var idea in Model)
+            {
+                <div class="col-md-4 mb-4">
 
-                <div class="card shadow-sm h-100 border-0 rounded-4">
+                    <div class="card shadow-sm h-100 border-0 rounded-4">
 
-                    <img src="~/uploads/@idea.ImageUrl" class="card-img-top" style="height:220px; object-fit:cover" />
+                        <img src="@(string.IsNullOrEmpty(idea.ImageUrl)
+                                                          ? "/uploads/no-image.png"
+                                                          : "/uploads/" + idea.ImageUrl)"
+                             class="card-img-top"
+                             style="height:220px; object-fit:cover" />
 
 
-                    <div class="card-body">
+                        <div class="card-body">
 
 
-                        <h4 class="fw-bold">@idea.Title</h4>
+                            <h4 class="fw-bold">@idea.Title</h4>
 
-                        <span class="badge bg-primary mb-3">
-                            @idea.Category
-                        </span>
+                            <span class="badge bg-primary mb-3">
+                                @idea.Category
+                            </span>
 
-                        <p>
-                            @(idea.Description.Length> 120 ? idea.Description.Substring(0,120)+"...": idea.Description)
-                        </p>
+                            <p>
+                                @(idea.Description.Length > 120 ? idea.Description.Substring(0, 120) + "..." : idea.Description)
+                            </p>
 
-                        <h5 class="text-success">
-                            ₹ @idea.RequiredFund
-                        </h5>
+                            <h5 class="text-success">
+                                ₹ @idea.RequiredFund.ToString("N0")
+                            </h5>
 
-                    </div>
+                        </div>
 
-                    <div class="card-footer bg-white border-0">
-                        <a asp-action="Details" asp-route-id="@idea.Id" class="btn btn-outline-primary w-100">View Details</a>
+                        <div class="card-footer bg-white border-0">
+                            <a asp-action="Details" asp-route-id="@idea.Id" class="btn btn-outline-primary w-100">View Details</a>
 
-                    <div class="d-flex gap-2 mt-2">
-                        
-                        <a asp-action="Edit" asp-route-id="@idea.Id" class="btn btn-warning w-50">Edit</a>
+                            <div class="d-flex gap-2 mt-2">
 
-                        <a asp-action="Delete" asp-route-id="@idea.Id" class="btn btn-danger w-50">Delete</a>
+                                <a asp-action="Edit" asp-route-id="@idea.Id" class="btn btn-warning w-50">Edit</a>
 
-                    </div>
+                                <a asp-action="Delete" asp-route-id="@idea.Id" class="btn btn-danger w-50">Delete</a>
+
+                            </div>
+                        </div>
+
                     </div>
 
                 </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info rounded-4 text-center p-4">
 
-            </div>
+            <h5 class="fw-bold">
+                No startup ideas found.
+            </h5>
+
+            <p class="mb-0">
+                Try changing search term or category.
+            </p>
+        </div>
+    }
+
+
+</div>
+
+<div class="d-flex justify-content-center mt-4">
+
+    <ul class="pagination">
+
+        @if (ViewBag.CurrentPage > 1)
+        {
+            <li class="page-item">
+
+                <a class="page-link"
+                   asp-action="Index"
+                   asp-route-page="@(ViewBag.CurrentPage - 1)"
+                   asp-route-searchTerm="@ViewBag.SearchTerm"
+                   asp-route-category="@ViewBag.Category">
+
+                    Previous
+
+                </a>
+
+            </li>
         }
-    </div>
+
+        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+        {
+            <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+
+                <a class="page-link"
+                   asp-action="Index"
+                   asp-route-page="@i"
+                   asp-route-searchTerm="@ViewBag.SearchTerm"
+                   asp-route-category="@ViewBag.Category">
+
+                    @i
+
+                </a>
+
+            </li>
+        }
+
+        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+        {
+            <li class="page-item">
+
+                <a class="page-link"
+                   asp-action="Index"
+                   asp-route-page="@(ViewBag.CurrentPage + 1)"
+                   asp-route-searchTerm="@ViewBag.SearchTerm"
+                   asp-route-category="@ViewBag.Category">
+
+                    Next
+
+                </a>
+
+            </li>
+        }
+
+    </ul>
 
 </div>

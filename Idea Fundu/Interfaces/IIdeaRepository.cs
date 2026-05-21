@@ -21,6 +21,6 @@ namespace Idea_Fundu.Interfaces
 
         Task<decimal> GetTotalInvestmentAsync(int ideaId);
 
-
+        
     }
 }

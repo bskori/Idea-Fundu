@@ -7,9 +7,11 @@ namespace Idea_Fundu.Models
     {
         [Required]
         [StringLength(100)]
-        public string FullName { get; set; }
+        public string? FullName { get; set; }
 
         public string ProfileImage { get; set; }
+
+        public string RoleType { get; set; }
 
         public ICollection<Idea>? Ideas { get; set; }
 

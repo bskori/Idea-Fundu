@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace Idea_Fundu.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class DashboardController : Controller
     {
         private readonly IIdeaRepository _ideaRepository;

@@ -7,6 +7,8 @@ using System.Security.Claims;
 
 namespace Idea_Fundu.Controllers
 {
+    [Authorize]
+
     public class InvestmentController : Controller
     {
         private readonly IInvestmentRepository _investmentRepository;

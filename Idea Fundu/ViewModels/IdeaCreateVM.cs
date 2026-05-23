@@ -21,6 +21,9 @@ namespace Idea_Fundu.ViewModels
 
         public IFormFile? ImageFile { get; set; }
 
+        [Required]
+        public string Status { get; set; } = "Pending";
+
         public string RiskLevel { get; set; }
         public string Restrictions { get; set; }
     }

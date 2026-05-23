@@ -99,14 +99,16 @@
 
                         </h3>
 
-                        <a asp-action="Create"
-                           asp-controller="StartupUpdate"
-                        asp-route-ideaId="@Model.Id"
-                        class="btn btn-outline-success">
-
-                            Add Update
-
-                        </a>
+                        @if (User.Identity.IsAuthenticated &&
+    User.Identity.Name == Model.User?.Email)
+                        {
+                            <a asp-action="Create"
+                               asp-controller="StartupUpdate"
+                               asp-route-ideaId="@Model.Id"
+                               class="btn btn-primary">
+                                Add Update
+                            </a>
+                        }
 
                     </div>
 
@@ -233,12 +235,32 @@
 
                 <div class="card-body p-4">
 
+                    <p>
+
+                        <strong>Status:</strong>
+
+                        <span class="badge
+                            @(Model.Status == "Funded" ? "bg-success" :
+                                Model.Status == "Closed" ? "bg-danger" :
+                                "bg-warning text-dark")">
+
+                            @Model.Status
+
+                        </span>
+
+                    </p>
+
                     <h3 class="fw-bold text-success">
                         ₹ @Model.RequiredFund.ToString("N0")
                     </h3>
 
                     <p class="text-muted">
                         Funding Goal
+
+                        <p class="small text-muted">
+                            Investors can support this startup until target funding is achieved.
+                        </p>
+
                     </p>
 
                     <p class="text-muted">

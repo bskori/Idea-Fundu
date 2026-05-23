@@ -2,23 +2,34 @@
 using Idea_Fundu.Models;
 using Idea_Fundu.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Idea_Fundu.Controllers
 {
     public class StartupUpdateController : Controller
     {
         private readonly IStartupUpdateRepository _repository;
-        public StartupUpdateController(IStartupUpdateRepository repository)
+        private readonly IIdeaRepository _ideaRepository;
+        public StartupUpdateController(IStartupUpdateRepository repository, IIdeaRepository ideaRepository)
         {
             _repository = repository;
+            _ideaRepository = ideaRepository;
         }
 
-        public IActionResult Create(int ideaId)
+        public async Task<IActionResult> Create(int ideaId)
         {
             var vm = new StartupUpdateCreateVM
             {
                 IdeaId = ideaId
             };
+
+            var idea = await _ideaRepository.GetIdeaByIdAsync(ideaId);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if(userId != idea.UserId)
+            {
+                return Unauthorized();
+            }
 
             return View(vm);
         }
@@ -28,6 +39,14 @@ namespace Idea_Fundu.Controllers
         {
             if (ModelState.IsValid)
             {
+                var idea = await _ideaRepository.GetIdeaByIdAsync(vm.IdeaId);
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if (userId != idea.UserId)
+                {
+                    return Unauthorized();
+                }
+
                 StartupUpdate startupUpdate = new StartupUpdate()
                 {
                     Title = vm.Title,

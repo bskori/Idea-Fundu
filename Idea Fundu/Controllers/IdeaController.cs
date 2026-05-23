@@ -86,7 +86,8 @@ namespace Idea_Fundu.Controllers
                     Category = ideaCreateVM.Category,
                     RiskLevel = ideaCreateVM.RiskLevel,
                     Restrictions = ideaCreateVM.Restrictions,
-                    ImageUrl = fileName
+                    ImageUrl = fileName,
+                    Status = ideaCreateVM.Status
                 };
                 await _ideaRepository.AddIdeaAsync(idea);
                 return RedirectToAction("Index");
@@ -148,7 +149,8 @@ namespace Idea_Fundu.Controllers
                 Category = idea.Category,
                 RequiredFund = idea.RequiredFund,
                 Restrictions = idea.Restrictions,
-                RiskLevel = idea.RiskLevel
+                RiskLevel = idea.RiskLevel,
+                Status = idea.Status
             };
 
             return View(vm);
@@ -181,6 +183,7 @@ namespace Idea_Fundu.Controllers
                 idea.RequiredFund = vm.RequiredFund;
                 idea.Restrictions = vm.Restrictions;
                 idea.RiskLevel = vm.RiskLevel;
+                idea.Status = vm.Status;
 
                 await _ideaRepository.UpdateIdeaAsync(idea);
 

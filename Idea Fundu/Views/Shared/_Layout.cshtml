@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using Idea_Fundu.Models
+@inject SignInManager<ApplicationUser> SignInManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -8,7 +11,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Idea_Fundu.styles.css" asp-append-version="true" />
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top">
             <div class="container">
@@ -40,14 +43,6 @@
                             Home
                         </a>
                         </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link"
-                            asp-action="Index"
-                            asp-controller="Dashboard">
-                            Dashboard
-                            </a>
-                        </li>
                         
                         <li class="nav-item">
                             <a class="nav-link" 
@@ -67,23 +62,48 @@
                             </a>
                         </li>
 
+                        @if (SignInManager.IsSignedIn(User))
+                            {
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-action="Index"
+                                   asp-controller="Dashboard">
+                                    Dashboard
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-controller="Idea"
+                                   asp-action="Create">
+                                    Add Idea
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-controller="Idea"
+                                   asp-action="MyIdeas">
+                                    My Ideas
+                                </a>
+                            </li>
+                            }
                         <li class="nav-item">
                             <a class="nav-link"
-                               asp-controller="Idea"
-                               asp-action="Create">
-                                Add Idea
+                               asp-controller="Home"
+                               asp-action="About">
+                                About
                             </a>
                         </li>
 
                         <li class="nav-item">
                             <a class="nav-link"
-                            asp-controller="Idea"
-                            asp-action="MyIdeas">
-                                My Ideas
+                               asp-controller="Home"
+                               asp-action="Contact">
+                                Contact
                             </a>
                         </li>
 
-                       
 
                     </ul>
                     <partial name="_LoginPartial" />
@@ -91,13 +111,13 @@
             </div>
         </nav>
     </header>
-    <div class="container py-1">
+    <div class="flex-grow-1 py-1">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="bg-dark text-light mt-5 py-4">
+    <footer class="bg-dark text-white text-center py-3  mt-3">
         <div class="container text-center">
             <p class="mb-1 fw-bold">
                 Idea Fundu

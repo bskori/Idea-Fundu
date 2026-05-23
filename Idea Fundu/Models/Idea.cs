@@ -23,6 +23,9 @@ namespace Idea_Fundu.Models
         [StringLength(100)]
         public string Category { get; set; }
 
+        [Required]
+        public string Status { get; set; } = "Pending";
+
         public string? RiskLevel { get; set; }
         public string? Restrictions { get; set; }
 

@@ -2,11 +2,12 @@
 using Idea_Fundu.Interfaces;
 using Idea_Fundu.Models;
 using Idea_Fundu.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing.Constraints;
+using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Idea_Fundu.Controllers
 {
@@ -54,6 +55,14 @@ namespace Idea_Fundu.Controllers
         [Authorize]
         public IActionResult Create()
         {
+            ViewBag.Categories = new SelectList(new List<string>
+            {
+                "AI & Recruitment",
+                "AgriTech",
+                "HealthTech",
+                "Green Energy",
+                "EdTech"
+            });
             return View();
         }
 
@@ -87,38 +96,71 @@ namespace Idea_Fundu.Controllers
                     RiskLevel = ideaCreateVM.RiskLevel,
                     Restrictions = ideaCreateVM.Restrictions,
                     ImageUrl = fileName,
-                    Status = ideaCreateVM.Status
+                    Status = "Pending",
+                    UserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
+
                 };
                 await _ideaRepository.AddIdeaAsync(idea);
-                return RedirectToAction("Index");
+                return RedirectToAction("MyIdeas");
             }
+            ViewBag.Categories = new SelectList(new List<string>
+            {
+                "AI & Recruitment",
+                "AgriTech",
+                "HealthTech",
+                "Green Energy",
+                "EdTech"
+            });
             return View(ideaCreateVM);
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var idea = await _ideaRepository.GetIdeaDetailsByIdAsync(id);
 
-            if(idea == null)
+            if (idea == null)
             {
                 return NotFound();
             }
 
+            // Total Investment
             var totalInvestment = await _ideaRepository.GetTotalInvestmentAsync(id);
 
+            // Progress %
+            decimal progress = 0;
+
+            if (idea.RequiredFund > 0)
+            {
+                progress = (totalInvestment / idea.RequiredFund) * 100;
+            }
+
+            // Remaining Amount
+            var remainingAmount = idea.RequiredFund - totalInvestment;
+
+            if (remainingAmount < 0)
+            {
+                remainingAmount = 0;
+            }
+
+            // Startup Updates
+            var updates = await _startupUpdateRepository.GetUpdatesByIdAsync(id);
+
+            // Comments
+            var comments = await _commentRepository.GetCommentsByIdeaAsync(id);
+
+            // ViewBag Data
             ViewBag.TotalInvestment = totalInvestment;
 
-            ViewBag.Progress = idea.RequiredFund == 0 ? 0 : (totalInvestment / idea.RequiredFund) * 100;
+            ViewBag.Progress = progress;
 
-            ViewBag.RemainingAmount = idea.RequiredFund - totalInvestment;
-
-            var updates = await _startupUpdateRepository.GetUpdatesByIdAsync(id);
+            ViewBag.RemainingAmount = remainingAmount;
 
             ViewBag.Updates = updates;
 
-            var comments = await _commentRepository.GetCommentsByIdeaAsync(id);
-
             ViewBag.Comments = comments;
+
+
 
             return View(idea);
         }
@@ -150,8 +192,18 @@ namespace Idea_Fundu.Controllers
                 RequiredFund = idea.RequiredFund,
                 Restrictions = idea.Restrictions,
                 RiskLevel = idea.RiskLevel,
-                Status = idea.Status
+                Status = idea.Status,
+                ImageUrl = idea.ImageUrl
             };
+
+            ViewBag.Categories = new SelectList(new List<string>
+            {
+                "AI & Recruitment",
+                "AgriTech",
+                "HealthTech",
+                "Green Energy",
+                "EdTech"
+            });
 
             return View(vm);
 
@@ -185,10 +237,38 @@ namespace Idea_Fundu.Controllers
                 idea.RiskLevel = vm.RiskLevel;
                 idea.Status = vm.Status;
 
+                string fileName = vm.ImageUrl;
+
+                if(vm.ImageFile != null)
+                {
+                    string uploadFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+
+                    fileName = Guid.NewGuid().ToString() + "_" + vm.ImageFile.FileName;
+
+                    string filePath = Path.Combine(uploadFolder, fileName);
+
+                    using(var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await vm.ImageFile.CopyToAsync(fileStream);
+                    }
+
+                }
+
+                idea.ImageUrl = fileName;
+
                 await _ideaRepository.UpdateIdeaAsync(idea);
 
                 return RedirectToAction("MyIdeas");
             }
+
+            ViewBag.Categories = new SelectList(new List<string>
+            {
+                "AI & Recruitment",
+                "AgriTech",
+                "HealthTech",
+                "Green Energy",
+                "EdTech"
+            });
 
             return View(vm);
             

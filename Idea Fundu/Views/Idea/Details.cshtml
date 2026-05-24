@@ -1,55 +1,64 @@
 ﻿@model Idea
+@using System.Security.Claims
 
 @{
     ViewBag.Title = "Idea Details";
+
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+    bool isOwner = currentUserId == Model.UserId;
 }
 
-<div class="container mt-5">
+<div class="container py-4 py-md-5">
 
-    <div class="row">
+    <div class="row g-4">
 
-        @* LEFT SECTION *@
+        <div class="col-12 col-lg-8">
 
-        <div class="col-md-8">
-
-            @* IMAGE CARD *@
-
-           
-
-            <div class="card border-0 shadow rounded-4 mb-4">
+            <div class="card border-0 shadow rounded-4 mb-4 overflow-hidden">
 
                 <img src="@(string.IsNullOrEmpty(Model.ImageUrl)
-                                              ? "/uploads/no-image.png"
-                                              : "/uploads/" + Model.ImageUrl)"
-                     class="img-fluid rounded-4"
+                                                   ? "/uploads/no-image.png"
+                                                   : "/uploads/" + Model.ImageUrl)"
+                     class="img-fluid"
                      style="height:400px;
                 width:100%;
                 object-fit:cover;" />
 
             </div>
- 
 
             <div class="card border-0 shadow rounded-4 mb-4">
 
-                <div class="card-body p-5">
+                <div class="card-body p-4 p-md-5">
 
-                    <span class="badge bg-primary mb-3">
-                        @Model.Category
-                    </span>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
 
-                    <h1 class="fw-bold mb-4">
+                        <span class="badge bg-primary">
+                            @Model.Category
+                        </span>
+
+                        <span class="badge
+                            @(Model.Status == "Funded" ? "bg-success" :
+                                Model.Status == "Closed" ? "bg-danger" :
+                                "bg-warning text-dark")">
+
+                            @Model.Status
+
+                        </span>
+
+                    </div>
+
+                    <h1 class="fw-bold mb-4 fs-2 fs-md-1">
                         @Model.Title
                     </h1>
 
-                    <p class="text-muted fs-5">
+                    <p class="text-muted fs-6 fs-md-5 mb-0">
                         @Model.Description
                     </p>
 
                 </div>
 
             </div>
-
-            @* RISK SECTION *@
 
             <div class="card border-0 shadow rounded-4 mb-4">
 
@@ -59,15 +68,13 @@
                         Risk Analysis
                     </h3>
 
-                    <p>
+                    <p class="mb-0">
                         @(Model.RiskLevel ?? "No risk analysis available.")
                     </p>
 
                 </div>
 
             </div>
-
-            @* RESTRICTIONS *@
 
             <div class="card border-0 shadow rounded-4 mb-4">
 
@@ -77,7 +84,7 @@
                         Investment Restrictions
                     </h3>
 
-                    <p>
+                    <p class="mb-0">
                         @(Model.Restrictions ?? "No restrictions added.")
                     </p>
 
@@ -85,36 +92,33 @@
 
             </div>
 
-            @* STARTUP UPDATES SECTION *@
-
             <div class="card border-0 shadow rounded-4">
 
                 <div class="card-body p-4">
 
-                    <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
 
-                        <h3 class="fw-bold">
-
+                        <h3 class="fw-bold mb-0">
                             Startup Updates
-
                         </h3>
 
-                        @if (User.Identity.IsAuthenticated &&
-    User.Identity.Name == Model.User?.Email)
+                        @if (User.Identity.IsAuthenticated && isOwner)
                         {
                             <a asp-action="Create"
                                asp-controller="StartupUpdate"
                                asp-route-ideaId="@Model.Id"
-                               class="btn btn-primary">
+                               class="btn btn-primary rounded-3">
+
                                 Add Update
+
                             </a>
                         }
 
                     </div>
 
-                    @if(ViewBag.Updates.Count > 0)
+                    @if (ViewBag.Updates.Count > 0)
                     {
-                        @foreach(var item in ViewBag.Updates)
+                        @foreach (var item in ViewBag.Updates)
                         {
                             <div class="border rounded-4 p-3 mb-3">
 
@@ -122,7 +126,7 @@
                                     @item.Title
                                 </h5>
 
-                                <p>
+                                <p class="mb-2">
                                     @item.Description
                                 </p>
 
@@ -138,129 +142,119 @@
                     }
                     else
                     {
-                        <div class="alert alert-info">
+                        <div class="alert alert-info rounded-4 mb-0">
 
                             No startup updates available.
 
                         </div>
                     }
+
                 </div>
 
             </div>
 
+            @if (User.Identity.IsAuthenticated && !isOwner)
+            {
+                <div class="card border-0 shadow rounded-4 mt-4">
 
-            @* COMMENT SECTION *@
+                    <div class="card-body p-4">
 
-            <div class="card border-0 shadow rounded-4 mt-4">
+                        <h3 class="fw-bold mb-4">
 
-                <div class="card-body p-4">
+                            Investor Discussions
 
-                    <h3 class="fw-bold">
+                        </h3>
 
-                        Investor Discussions
+                        <form asp-action="Create"
+                              asp-controller="Comment"
+                              method="post">
 
-                    </h3>
-
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <form asp-action="Create" asp-controller="Comment" method="post">
-
-                            <input type="hidden" name="ideaId" value="@Model.Id" />
+                            <input type="hidden"
+                                   name="ideaId"
+                                   value="@Model.Id" />
 
                             <div class="mb-3">
 
-                                <textarea name="Message" class="form-control" rows="4" placeholder="Write your comment..."></textarea>
+                                <textarea name="Message"
+                                          class="form-control rounded-3"
+                                          rows="4"
+                                          placeholder="Write your comment..."></textarea>
 
                             </div>
 
-                            <button class="btn btn-primary">Post Comment</button>
+                            <button class="btn btn-primary rounded-3">
+
+                                Post Comment
+
+                            </button>
 
                         </form>
 
                         <hr />
-                    }
 
-                    @if(ViewBag.Comments != null && ViewBag.Comments.Count > 0)
-                    {
-                        @foreach(var item in ViewBag.Comments)
+                        @if (ViewBag.Comments != null && ViewBag.Comments.Count > 0)
                         {
-                            <div class="border rounded-4 p-3 m-3">
+                            @foreach (var item in ViewBag.Comments)
+                            {
+                                <div class="border rounded-4 p-3 mb-3">
 
-                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
 
-                                    <h6 class="fw-bold">
+                                        <h6 class="fw-bold mb-0">
 
-                                        @item.User.FullName
+                                            @item.User.FullName
 
-                                    </h6>
+                                        </h6>
 
-                                    <small class="text-muted">
+                                        <small class="text-muted">
 
-                                        @item.CreatedDate.ToShortDateString()
+                                            @item.CreatedDate.ToShortDateString()
 
-                                    </small>
+                                        </small>
+
+                                    </div>
+
+                                    <p class="mt-3 mb-0">
+
+                                        @item.Message
+
+                                    </p>
 
                                 </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="alert alert-info rounded-4 mb-0">
 
-                                <p class="mt-2 mb-0">
-
-                                    @item.Message
-
-                                </p>
+                                No discussions available yet.
 
                             </div>
                         }
-                    }
-                    else
-                    {
-                        <div class="alert alert-info">
 
-                            No discussions available yet.
-
-                        </div>
-                    }
+                    </div>
 
                 </div>
-
-            </div>
-
+            }
 
         </div>
 
-        @* RIGHT SECTION *@
+        <div class="col-12 col-lg-4">
 
-        <div class="col-md-4">
-
-            <div class="card border-0 shadow rounded-4 sticky-top">
+            <div class="card border-0 shadow rounded-4 sticky-lg-top">
 
                 <div class="card-body p-4">
 
-                    <p>
-
-                        <strong>Status:</strong>
-
-                        <span class="badge
-                            @(Model.Status == "Funded" ? "bg-success" :
-                                Model.Status == "Closed" ? "bg-danger" :
-                                "bg-warning text-dark")">
-
-                            @Model.Status
-
-                        </span>
-
-                    </p>
-
-                    <h3 class="fw-bold text-success">
+                    <h3 class="fw-bold text-success mb-3">
                         ₹ @Model.RequiredFund.ToString("N0")
                     </h3>
 
-                    <p class="text-muted">
+                    <p class="text-muted mb-3">
                         Funding Goal
+                    </p>
 
-                        <p class="small text-muted">
-                            Investors can support this startup until target funding is achieved.
-                        </p>
-
+                    <p class="small text-muted">
+                        Investors can support this startup until target funding is achieved.
                     </p>
 
                     <p class="text-muted">
@@ -275,56 +269,87 @@
                             ₹ @ViewBag.TotalInvestment.ToString("N0")
                         </h5>
 
-                        <p class="text-muted">
+                        <p class="text-muted mb-0">
                             Total Investment Raised
                         </p>
 
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-4">
 
-                        <label class="fw-bold">
+                        <label class="fw-bold mb-2">
 
                             Funding Progress
 
                         </label>
 
-                        <div class="progress mt-2" style="height:25px">
+                        <div class="progress"
+                             style="height:25px">
 
-                            <div class="progress-bar bg-success" style="width:@ViewBag.Progress%">
+                            <div class="progress-bar bg-success"
+                                 style="width:@ViewBag.Progress%">
+
                                 @Math.Round(ViewBag.Progress, 0)%
+
                             </div>
 
                         </div>
 
                     </div>
 
-                    <div class="mt-3">
+                    <div class="mb-4">
 
-                        <p>
-                            <strong>Remaing Amount:</strong>
+                        <p class="mb-0">
+
+                            <strong>Remaining Amount:</strong>
                             ₹ @ViewBag.RemainingAmount.ToString("N0")
+
                         </p>
 
                     </div>
 
-                    <a asp-action="Create" asp-controller="Investment" asp-route-ideaId="@Model.Id" class="btn btn-success w-100 btn-lg">
+                    @if (User.Identity.IsAuthenticated && !isOwner)
+                    {
+                        <div class="d-grid">
 
-                       Invest Now
+                            <a asp-action="Create"
+                               asp-controller="Investment"
+                               asp-route-ideaId="@Model.Id"
+                               class="btn btn-success btn-lg rounded-3">
 
-                   </a>
+                                Invest Now
 
-                    <a asp-action="Index"
-                       class="btn btn-outline-dark w-100 mt-2">
+                            </a>
 
-                        Back to Ideas
+                        </div>
+                    }
 
-                    </a>
+                    <div class="d-grid mt-3">
+
+                        @if (User.Identity.IsAuthenticated && !isOwner)
+                        {
+                            <a asp-action="Index"
+                               class="btn btn-outline-dark rounded-3">
+
+                                Back to Ideas
+
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-action="MyIdeas"
+                               class="btn btn-outline-dark rounded-3">
+
+                                Back to Ideas
+
+                            </a>
+                        }
+
+                    </div>
 
                 </div>
 
             </div>
-
 
         </div>
 

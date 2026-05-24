@@ -5,76 +5,120 @@
     ViewData["Title"] = "Register";
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
+<div class="container py-4 py-md-5">
 
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-body p-5">
+    <div class="row justify-content-center align-items-center min-vh-75">
 
-                    <h1 class="text-center fw-bold mb-2">Create Account</h1>
-                    <p class="text-center text-muted mb-4">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+
+                <div class="bg-dark text-white text-center p-4 p-md-5">
+
+                    <h2 class="fw-bold mb-2">
+
+                        Create Account
+
+                    </h2>
+
+                    <p class="mb-0 text-light">
+
                         Join Idea Fundu today
+
                     </p>
 
-                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+
+                    <form id="registerForm"
+                          asp-route-returnUrl="@Model.ReturnUrl"
+                          method="post">
 
                         <div asp-validation-summary="ModelOnly"
-                             class="text-danger mb-3">
+                             class="alert alert-danger rounded-3 mb-4">
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Input.FullName" class="form-label"></label>
+                        <div class="form-floating mb-4">
 
                             <input asp-for="Input.FullName"
-                                   class="form-control form-control-lg rounded-3"
-                                   placeholder="Enter your full name" />
+                                   class="form-control"
+                                   placeholder="Full Name" />
+
+                            <label asp-for="Input.FullName"></label>
 
                             <span asp-validation-for="Input.FullName"
-                                  class="text-danger"></span>
+                                  class="text-danger small"></span>
+
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Input.Email" class="form-label"></label>
+                        <div class="form-floating mb-4">
 
                             <input asp-for="Input.Email"
-                                   class="form-control form-control-lg rounded-3"
-                                   placeholder="Enter your email" />
+                                   class="form-control"
+                                   placeholder="Email Address" />
+
+                            <label asp-for="Input.Email"></label>
 
                             <span asp-validation-for="Input.Email"
-                                  class="text-danger"></span>
+                                  class="text-danger small"></span>
+
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Input.Password" class="form-label"></label>
+                        <div class="row">
 
-                            <input asp-for="Input.Password"
-                                   class="form-control form-control-lg rounded-3"
-                                   placeholder="Create password" />
+                            <div class="col-12 col-md-6">
 
-                            <span asp-validation-for="Input.Password"
-                                  class="text-danger"></span>
+                                <div class="form-floating mb-4">
+
+                                    <input asp-for="Input.Password"
+                                           class="form-control"
+                                           placeholder="Password" />
+
+                                    <label asp-for="Input.Password"></label>
+
+                                    <span asp-validation-for="Input.Password"
+                                          class="text-danger small"></span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-12 col-md-6">
+
+                                <div class="form-floating mb-4">
+
+                                    <input asp-for="Input.ConfirmPassword"
+                                           class="form-control"
+                                           placeholder="Confirm Password" />
+
+                                    <label asp-for="Input.ConfirmPassword"></label>
+
+                                    <span asp-validation-for="Input.ConfirmPassword"
+                                          class="text-danger small"></span>
+
+                                </div>
+
+                            </div>
+
                         </div>
 
-                        <div class="mb-4">
-                            <label asp-for="Input.ConfirmPassword"
-                                   class="form-label"></label>
+                        <div class="form-floating mb-4">
 
-                            <input asp-for="Input.ConfirmPassword"
-                                   class="form-control form-control-lg rounded-3"
-                                   placeholder="Confirm password" />
+                            <select asp-for="Input.RoleType"
+                                    class="form-select">
 
-                            <span asp-validation-for="Input.ConfirmPassword"
-                                  class="text-danger"></span>
-                        </div>
+                                <option value="Investor">
 
-                        <div class="form-floating mb-3">
+                                    Investor
 
-                            <select asp-for="Input.RoleType" class="form-select">
+                                </option>
 
-                                <option value="Investor">Investor</option>
+                                <option value="Founder">
 
-                                <option value="Founder">Startup Founder</option>
+                                    Startup Founder
+
+                                </option>
 
                             </select>
 
@@ -85,25 +129,43 @@
                         <button id="registerSubmit"
                                 type="submit"
                                 class="btn btn-dark btn-lg w-100 rounded-3">
+
                             Register
+
                         </button>
 
                         <div class="text-center mt-4">
-                            <a asp-page="./Login"
-                               asp-route-returnUrl="@Model.ReturnUrl">
-                                Already have an account? Login
-                            </a>
+
+                            <p class="mb-0 text-muted">
+
+                                Already have an account?
+
+                                <a asp-page="./Login"
+                                   asp-route-returnUrl="@Model.ReturnUrl"
+                                   class="fw-semibold text-decoration-none">
+
+                                    Login
+
+                                </a>
+
+                            </p>
+
                         </div>
 
                     </form>
 
                 </div>
+
             </div>
 
         </div>
+
     </div>
+
 </div>
 
 @section Scripts {
+
     <partial name="_ValidationScriptsPartial" />
+
 }

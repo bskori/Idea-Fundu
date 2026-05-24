@@ -2,6 +2,7 @@
 using Idea_Fundu.Models;
 using Idea_Fundu.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -12,12 +13,15 @@ namespace Idea_Fundu.Controllers
     public class InvestmentController : Controller
     {
         private readonly IInvestmentRepository _investmentRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public InvestmentController(IInvestmentRepository investmentRepository)
+        public InvestmentController(IInvestmentRepository investmentRepository, UserManager<ApplicationUser> userManager)
         {
             _investmentRepository = investmentRepository;
+            _userManager = userManager;
         }
 
+        [Authorize]
         public IActionResult Create(int ideaId)
         {
             var vm = new InvestmentCreateVM
@@ -32,6 +36,13 @@ namespace Idea_Fundu.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(InvestmentCreateVM vm)
         {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user.RoleType != "Investor")
+            {
+                return Unauthorized();
+            }
+
             if (ModelState.IsValid)
             {
 
@@ -46,12 +57,13 @@ namespace Idea_Fundu.Controllers
 
                 await _investmentRepository.AddInvestmentAsync(investment);
 
-                return RedirectToAction("Index", "Idea");
+                return RedirectToAction("MyInvestments");
 
             }
             return View(vm);
         }
 
+        [Authorize]
         public async Task<IActionResult> MyInvestments()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

@@ -20,6 +20,8 @@ namespace Idea_Fundu.ViewModels
         public string Category { get; set; }
 
         public IFormFile? ImageFile { get; set; }
+        public string? ImageUrl { get; set; }
+
 
         [Required]
         public string Status { get; set; } = "Pending";

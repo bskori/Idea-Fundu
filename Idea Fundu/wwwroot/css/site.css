@@ -2,6 +2,10 @@ html {
   font-size: 14px;
 }
 
+html, body {
+    overflow-x: hidden;
+}
+
 @media (min-width: 768px) {
   html {
     font-size: 16px;
@@ -35,4 +39,53 @@ Home Index*/
 
 .navbar-nav .nav-link {
     margin-right: 15px;
+}
+
+
+.navbar .nav-link {
+    transition: 0.3s;
+}
+
+    .navbar .nav-link:hover {
+        color: #0d6efd !important;
+    }
+
+.navbar-nav .nav-item {
+    margin-right: 8px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+.feature-card {
+    transition: all 0.3s ease;
+}
+
+    .feature-card:hover {
+        transform: translateY(-8px);
+    }
+
+.feature-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+@@media(max-width:576px) {
+
+    .feature-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 1.7rem;
+    }
+
+    .feature-card .card-body {
+        padding: 2rem 1.5rem;
+    }
 }

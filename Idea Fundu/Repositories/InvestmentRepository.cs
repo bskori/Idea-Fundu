@@ -17,6 +17,7 @@ namespace Idea_Fundu.Repositories
         public async Task AddInvestmentAsync(Investment investment)
         {
             await _context.Investments.AddAsync(investment);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Investment>> GetInvestmentByUserAsync(string userId)

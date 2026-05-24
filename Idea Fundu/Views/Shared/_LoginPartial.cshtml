@@ -4,31 +4,34 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-<ul class="navbar-nav ms-auto">
+<ul class="navbar-nav ms-auto align-items-lg-center">
 
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown mt-3 mt-lg-0">
 
             <a class="nav-link dropdown-toggle text-white fw-semibold"
                href="#"
                role="button"
-               data-bs-toggle="dropdown">
+               data-bs-toggle="dropdown"
+               aria-expanded="false">
 
-                @(User.Identity?.Name)
+                @UserManager.GetUserAsync(User).Result?.FullName
 
             </a>
 
-            <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3">
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4 mt-2">
 
                 <li>
-                    <a class="dropdown-item"
+
+                    <a class="dropdown-item py-2"
                        asp-area="Identity"
                        asp-page="/Account/Manage/Index">
 
-                        Profile
+                        My Account
 
                     </a>
+
                 </li>
 
                 <li>
@@ -36,10 +39,11 @@
                 </li>
 
                 <li>
+
                     <form asp-area="Identity"
                           asp-page="/Account/Logout"
                           method="post"
-                          class="px-2">
+                          class="px-2 pb-2">
 
                         <button type="submit"
                                 class="btn btn-danger w-100 rounded-3">
@@ -49,6 +53,7 @@
                         </button>
 
                     </form>
+
                 </li>
 
             </ul>
@@ -57,9 +62,9 @@
     }
     else
     {
-        <li class="nav-item me-2">
+        <li class="nav-item me-lg-2 mb-2 mb-lg-0">
 
-            <a class="btn btn-outline-light rounded-3"
+            <a class="btn btn-outline-light rounded-3 w-100"
                asp-area="Identity"
                asp-page="/Account/Register">
 
@@ -71,7 +76,7 @@
 
         <li class="nav-item">
 
-            <a class="btn btn-light rounded-3"
+            <a class="btn btn-light rounded-3 w-100"
                asp-area="Identity"
                asp-page="/Account/Login">
 

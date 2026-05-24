@@ -57,7 +57,7 @@ namespace Idea_Fundu.Controllers
 
                 await _repository.AddUpdateAsync(startupUpdate);
 
-                RedirectToAction("Details", "Idea", new { id = vm.IdeaId });
+                return RedirectToAction("Details", "Idea", new { id = vm.IdeaId });
             }
             return View(vm);
         }

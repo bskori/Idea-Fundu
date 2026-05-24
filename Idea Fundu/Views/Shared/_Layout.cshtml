@@ -1,6 +1,17 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Idea_Fundu.Models
 @inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ApplicationUser appUser = null;
+
+    if (SignInManager.IsSignedIn(User))
+    {
+        appUser = await UserManager.GetUserAsync(User);
+    }
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,10 +24,10 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top">
-            <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top py-3">
+             <div class="container-fluid container-lg">
 
-                <a class="navbar-brand fw-bold"  asp-controller="Home" asp-action="Index">Idea Fundu</a>
+                <a class="navbar-brand fw-bold fs-4" asp-controller="Home" asp-action="Index">Idea Fundu</a>
 
 
                 <button class="navbar-toggler" 
@@ -30,9 +41,9 @@
                 </button>
 
 
-                <div class="collapse navbar-collapse" id="navbarContent">
-
-                    <ul class="navbar-nav me-auto">
+                <div class="collapse navbar-collapse align-items-lg-center"
+                     id="navbarContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                         
 
@@ -52,17 +63,20 @@
                         </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-action="MyInvestments"
-                               asp-controller="Investment">
+                        @if(SignInManager.IsSignedIn(User) && appUser?.RoleType == "Investor")
+                            {
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-action="MyInvestments"
+                                   asp-controller="Investment">
 
-                                My Investments
+                                    My Investments
 
-                            </a>
-                        </li>
+                                </a>
+                            </li>
+                            }
 
-                        @if (SignInManager.IsSignedIn(User))
+                        @if (SignInManager.IsSignedIn(User) && appUser?.RoleType == "Founder")
                             {
                             <li class="nav-item">
                                 <a class="nav-link"
@@ -111,19 +125,19 @@
             </div>
         </nav>
     </header>
-    <div class="flex-grow-1 py-1">
+    <div class="flex-grow-1 py-3 py-md-4">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="bg-dark text-white text-center py-3  mt-3">
+    <footer class="bg-dark text-white text-center py-4 mt-auto">
         <div class="container text-center">
             <p class="mb-1 fw-bold">
                 Idea Fundu
             </p>
 
-            <p class="mb-0">
+            <p class="mb-0 small text-light">
                 Connecting startups with investors.
             </p>
         </div>

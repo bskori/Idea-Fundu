@@ -1,16 +1,26 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity;
+
+@inject SignInManager<ApplicationUser> SignInManager;
+@inject UserManager<ApplicationUser> UserManager;
+
+@{
     ViewData["Title"] = "Home Page";
+    var currentUser = await UserManager.GetUserAsync(User);
 }
 
 <div class="container py-5">
 
     @* HERO SECTION *@
 
-    <div class="row align-items-center mb-5">
+    <div class="row align-items-center g-5 mb-5">
 
-        <div class="col-md-6">
+        <div class="col-12 col-lg-6 text-center text-lg-start">
 
-            <h1 class="display-4 fw-bold">Fund Innovative Startup Ideas</h1>
+            <h1 class="display-5 display-md-4 fw-bold">
+
+                Fund Innovative Startup Ideas
+
+            </h1>
 
             <p class="lead text-muted mt-4">
 
@@ -19,51 +29,91 @@
 
             </p>
 
-            <div class="mt-4">
+            <div class="d-flex flex-column flex-sm-row gap-3 mt-4">
 
-                <a asp-controller="Idea" asp-action="Index" class="btn btn-primary btn-lg me-3">
+                <a asp-controller="Idea"
+                   asp-action="Index"
+                   class="btn btn-primary btn-lg">
+
                     Explore Ideas
+
                 </a>
 
-                <a asp-controller="Idea" asp-action="Create" class="btn btn-outline-dark btn-lg">
-                    Submit Idea
-                </a>
+                @if (SignInManager.IsSignedIn(User) && currentUser?.RoleType != "Investor")
+                {
+                    <a asp-controller="Idea"
+                       asp-action="Create"
+                       class="btn btn-outline-dark btn-lg">
+
+                        Submit Idea
+
+                    </a>
+                }
 
             </div>
 
         </div>
 
-        <div class="col-md-6 text-center">
+        <div class="col-12 col-lg-6 text-center">
+
             <img src="https://images.unsplash.com/photo-1552664730-d307ca884978"
-                 class="img-fluid rounded-4 shadow"
-                 style="height:400px; object-fit:cover;">
+                 class="img-fluid rounded-4 shadow w-100"
+                 style="max-height:450px; object-fit:cover;" />
+
         </div>
 
     </div>
 
     @* STATS SECTION *@
 
-    <div class="row text-center mt-5 mb-5">
+    <div class="row text-center g-4 mt-5 mb-5">
 
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 rounded-4 p-4">
-                <h2 class="fw-bold text-primary">120+</h2>
-                <p>Startup Ideas</p>
+        <div class="col-12 col-md-4">
+
+            <div class="card shadow-sm border-0 rounded-4 p-4 h-100">
+
+                <h2 class="fw-bold text-primary">
+                    120+
+                </h2>
+
+                <p class="mb-0">
+                    Startup Ideas
+                </p>
+
             </div>
+
         </div>
 
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 rounded-4 p-4">
-                <h2 class="fw-bold text-success">₹50L+</h2>
-                <p>Total Funding</p>
+        <div class="col-12 col-md-4">
+
+            <div class="card shadow-sm border-0 rounded-4 p-4 h-100">
+
+                <h2 class="fw-bold text-success">
+                    ₹50L+
+                </h2>
+
+                <p class="mb-0">
+                    Total Funding
+                </p>
+
             </div>
+
         </div>
 
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 rounded-4 p-4">
-                <h2 class="fw-bold text-dark">300+</h2>
-                <p>Investors</p>
+        <div class="col-12 col-md-4">
+
+            <div class="card shadow-sm border-0 rounded-4 p-4 h-100">
+
+                <h2 class="fw-bold text-dark">
+                    300+
+                </h2>
+
+                <p class="mb-0">
+                    Investors
+                </p>
+
             </div>
+
         </div>
 
     </div>
@@ -71,67 +121,132 @@
 
     @* FEATURE SECTION *@
 
-    <div class="text-center mb-5">
+    @* FEATURE SECTION *@
 
-        <h2 class="fw-bold">Why Choose Idea Fundu?</h2>
+    <div class="text-center mb-5 px-2">
 
-        <p class="text-muted">
-            A trusted platform for startup collaboration and investments.
+        <h2 class="fw-bold display-6">
+            Why Choose Idea Fundu?
+        </h2>
+
+        <p class="text-muted mx-auto"
+           style="max-width:700px;">
+
+            A trusted platform for startup collaboration,
+            innovation, and smart investments.
+
         </p>
 
     </div>
 
-    <div class="row">
+    <div class="row g-4">
 
-        <div class="col-md-4 mb-4">
+        @* FEATURE 1 *@
 
-            <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+        <div class="col-12 col-md-6 col-lg-4">
 
-                <h4 class="fw-bold">Startup Showcase</h4>
+            <div class="card border-0 shadow-sm rounded-4 h-100 feature-card">
 
-                <p class="text-muted">
+                <div class="card-body p-4 p-lg-5 text-center">
 
-                    Present your business ideas professionally
-                    to attract investors.
-                </p>
+                    <div class="mb-4">
+
+                        <div class="feature-icon bg-primary bg-opacity-10 text-primary mx-auto">
+
+                            🚀
+
+                        </div>
+
+                    </div>
+
+                    <h4 class="fw-bold mb-3">
+
+                        Startup Showcase
+
+                    </h4>
+
+                    <p class="text-muted mb-0">
+
+                        Present your startup ideas professionally
+                        and attract investors from different industries.
+
+                    </p>
+
+                </div>
 
             </div>
 
-
         </div>
 
-        <div class="col-md-4 mb-4">
+        @* FEATURE 2 *@
 
-            <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+        <div class="col-12 col-md-6 col-lg-4">
 
-                <h4 class="fw-bold">
-                    Investor Network
-                </h4>
+            <div class="card border-0 shadow-sm rounded-4 h-100 feature-card">
 
-                <p class="text-muted">
+                <div class="card-body p-4 p-lg-5 text-center">
 
-                    Connect directly with investors interested
-                    in innovative opportunities.
+                    <div class="mb-4">
 
-                </p>
+                        <div class="feature-icon bg-success bg-opacity-10 text-success mx-auto">
+
+                            💰
+
+                        </div>
+
+                    </div>
+
+                    <h4 class="fw-bold mb-3">
+
+                        Investor Network
+
+                    </h4>
+
+                    <p class="text-muted mb-0">
+
+                        Connect directly with investors interested
+                        in innovative startup opportunities.
+
+                    </p>
+
+                </div>
 
             </div>
 
         </div>
 
+        @* FEATURE 3 *@
 
-        <div class="col-md-4 mb-4">
-            <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
-                <h4 class="fw-bold">
-                    Growth Tracking
-                </h4>
+        <div class="col-12 col-md-6 col-lg-4 mx-md-auto">
 
-                <p class="text-muted">
+            <div class="card border-0 shadow-sm rounded-4 h-100 feature-card">
 
-                    Track project progress, funding,
-                    and startup growth.
+                <div class="card-body p-4 p-lg-5 text-center">
 
-                </p>
+                    <div class="mb-4">
+
+                        <div class="feature-icon bg-dark bg-opacity-10 text-dark mx-auto">
+
+                            📈
+
+                        </div>
+
+                    </div>
+
+                    <h4 class="fw-bold mb-3">
+
+                        Growth Tracking
+
+                    </h4>
+
+                    <p class="text-muted mb-0">
+
+                        Track startup growth, investments,
+                        funding progress, and updates in real-time.
+
+                    </p>
+
+                </div>
 
             </div>
 
@@ -139,6 +254,7 @@
 
     </div>
 
+    
 
 
 </div>

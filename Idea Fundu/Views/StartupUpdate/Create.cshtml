@@ -4,37 +4,81 @@
     ViewBag.Title = "Add Startup Update";
 }
 
-<div class="container mt-5">
+<div class="container py-4 py-md-5">
 
     <div class="row justify-content-center">
 
-        <div class="col-md-8">
+        <div class="col-12 col-md-10 col-lg-8">
 
-            <div class="card shadow rounded-4 border-0">
+            <div class="card shadow-lg rounded-4 border-0">
 
-                <div class="card-body p-5">
+                <div class="card-body p-3 p-sm-4 p-md-5">
 
-                    <h5 class="fw-bold mb-4">
-                        Add Startup Update
-                    </h5>
+                    <div class="text-center text-md-start mb-4">
+
+                        <h2 class="fw-bold mb-2">
+                            Add Startup Update
+                        </h2>
+
+                        <p class="text-muted mb-0">
+                            Share your startup progress with investors.
+                        </p>
+
+                    </div>
 
                     <form method="post">
 
                         <input asp-for="IdeaId" type="hidden" />
 
-                        <div class="mb-3">
-                            <label asp-for="Title" class="form-label"></label>
-                            <input asp-for="Title" class="form-control" />
-                            <span asp-validation-for="Title" class="text-danger"></span>
+                        <div class="mb-4">
+
+                            <label asp-for="Title"
+                                   class="form-label fw-semibold">
+                            </label>
+
+                            <input asp-for="Title"
+                                   class="form-control form-control-lg rounded-3" />
+
+                            <span asp-validation-for="Title"
+                                  class="text-danger small">
+                            </span>
+
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Description" class="form-label"></label>
-                            <textarea asp-for="Description" rows="5" class="form-control"></textarea>
-                            <span asp-validation-for="Description" class="text-danger"></span>
+                        <div class="mb-4">
+
+                            <label asp-for="Description"
+                                   class="form-label fw-semibold">
+                            </label>
+
+                            <textarea asp-for="Description"
+                                      rows="6"
+                                      class="form-control rounded-3"></textarea>
+
+                            <span asp-validation-for="Description"
+                                  class="text-danger small">
+                            </span>
+
                         </div>
 
-                        <button class="btn btn-success w-100"> Add Update</button>
+                        <div class="d-grid d-md-flex gap-3">
+
+                            <button class="btn btn-success btn-lg px-4 rounded-3 w-100 w-md-auto"
+                                    type="submit">
+
+                                Add Update
+
+                            </button>
+
+                            <a asp-action="MyIdeas"
+                               asp-controller="Idea"
+                               class="btn btn-outline-secondary btn-lg rounded-3 w-100 w-md-auto">
+
+                                Cancel
+
+                            </a>
+
+                        </div>
 
                     </form>
 
@@ -48,6 +92,6 @@
 
 </div>
 
-@section Scripts{
-    <partial name= "_ValidationScriptsPartial"/>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }

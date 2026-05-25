@@ -1,5 +1,8 @@
 ﻿@model Idea
 @using System.Security.Claims
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewBag.Title = "Idea Details";
@@ -7,6 +10,13 @@
     var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
     bool isOwner = currentUserId == Model.UserId;
+
+    ApplicationUser appUser = null;
+
+    if (SignInManager.IsSignedIn(User))
+    {
+        appUser = await UserManager.GetUserAsync(User);
+    }
 }
 
 <div class="container py-4 py-md-5">
@@ -308,7 +318,7 @@
 
                     </div>
 
-                    @if (User.Identity.IsAuthenticated && !isOwner)
+                    @if (appUser?.RoleType != "Founder")
                     {
                         <div class="d-grid">
 
@@ -326,7 +336,7 @@
 
                     <div class="d-grid mt-3">
 
-                        @if (User.Identity.IsAuthenticated && !isOwner)
+                        @if (appUser?.RoleType != "Founder")
                         {
                             <a asp-action="Index"
                                class="btn btn-outline-dark rounded-3">

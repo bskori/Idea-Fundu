@@ -39,7 +39,7 @@
 
                 </a>
 
-                @if (SignInManager.IsSignedIn(User) && currentUser?.RoleType != "Investor")
+                @if (currentUser?.RoleType != "Investor")
                 {
                     <a asp-controller="Idea"
                        asp-action="Create"
